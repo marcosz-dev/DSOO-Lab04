@@ -16,15 +16,17 @@ public class Usuario {
     public void prestarLibro(Libro libro) {
         if (libro.estaDisponible()) {
             System.out.println("El libro \"" + libro.getTitulo() + "\" ha sido prestado a " + nombre + ".");
-            // Aquí agregar lógica para marcar el libro como no disponible
-        } else {
+            // Marcar el libro como no disponible
+        } 
+        else {
             System.out.println("El libro \"" + libro.getTitulo() + "\" no está disponible para préstamo.");
         }
     }
 
     public void devolverLibro(Libro libro) {
         System.out.println("El libro \"" + libro.getTitulo() + "\" ha sido devuelto por " + nombre + ".");
-        // Aquí agregar lógica para marcar el libro como disponible
+        
+        // Marcar el libro como disponible
     }
 
     public void verificarDisponibilidad(Libro libro) {

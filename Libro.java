@@ -34,8 +34,13 @@ public class Libro {
         this.isbn = isbn;
     }  
 
+    // Método para verificar si el libro está disponible
     public boolean estaDisponible() {
         return disponible;
     }
     
+
+    public String toString() {
+        return "ISBN: "+isbn+"\tTITULO: "+titulo+"\tAUTOR: "+autor+"\tDISPONIBLE: "+disponible;
+    }
 }
