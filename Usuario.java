@@ -17,7 +17,7 @@ public class Usuario {
         if (libro.estaDisponible()) {
             System.out.println("El libro \"" + libro.getTitulo() + "\" ha sido prestado a " + nombre + ".");
             // Marcar el libro como no disponible
-        } 
+            libro.setDisponible(false);} 
         else {
             System.out.println("El libro \"" + libro.getTitulo() + "\" no está disponible para préstamo.");
         }
@@ -25,7 +25,7 @@ public class Usuario {
 
     public void devolverLibro(Libro libro) {
         System.out.println("El libro \"" + libro.getTitulo() + "\" ha sido devuelto por " + nombre + ".");
-        
+        libro.setDisponible(true);
         // Marcar el libro como disponible
     }
 
