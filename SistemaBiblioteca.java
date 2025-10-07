@@ -4,6 +4,7 @@ public class SistemaBiblioteca {
     private ArrayList<Libro> libros;
     private ArrayList<Usuario> usuarios;
 
+    // Constructor
     public SistemaBiblioteca() {
         this.libros = new ArrayList<>();
         this.usuarios = new ArrayList<>();
@@ -41,10 +42,7 @@ public class SistemaBiblioteca {
 
     //Valida que la cadena no sea null
     private boolean stringValido(String palabra) {
-        if (palabra==null) {
-            return false;
-        }
-        return true;
+        return palabra != null && !palabra.trim().isEmpty();
     }
 
     //Metodo para agregar usuario
@@ -109,5 +107,32 @@ public class SistemaBiblioteca {
     //Lista de usuarios registrados
     public ArrayList<Usuario> getUsuarios() {
         return usuarios;
+    }
+
+
+    // Método para mostrar todos los libros
+    public void mostrarLibros() {
+        System.out.println("\n========== CATÁLOGO DE LIBROS ==========");
+        if (libros.isEmpty()) {
+            System.out.println("No hay libros registrados");
+        } else {
+            for (int i = 0; i < libros.size(); i++) {
+                System.out.println((i + 1) + ". " + libros.get(i));
+            }
+        }
+        System.out.println("=========================================\n");
+    }
+    
+    // Método para mostrar todos los usuarios
+    public void mostrarUsuarios() {
+        System.out.println("\n========== LISTA DE USUARIOS ==========");
+        if (usuarios.isEmpty()) {
+            System.out.println("No hay usuarios registrados");
+        } else {
+            for (int i = 0; i < usuarios.size(); i++) {
+                System.out.println((i + 1) + ". " + usuarios.get(i));
+            }
+        }
+        System.out.println("========================================\n");
     }
 }

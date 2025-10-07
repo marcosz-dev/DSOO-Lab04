@@ -4,13 +4,24 @@ public class Libro {
     private String isbn;
     private boolean disponible;
 
-    public Libro(String titulo, String autor, String isbn) {
+    // Constructor completo
+    public Libro(String titulo, String autor, String isbn, boolean disponible) {
         this.titulo = titulo;
         this.autor = autor;
         this.isbn = isbn;
-        this.disponible = true; // Por defecto, el libro está disponible
+        this.disponible = disponible; 
+    }
+    // Constructor sobrecargado sin disponible
+    public Libro(String titulo, String autor, String isbn) {
+        this(titulo, autor, isbn, true); // Por defecto, el libro está disponible
     }
 
+    // Constructor sobrecargado sin isbn
+    public Libro(String titulo, String autor) {
+        this(titulo, autor, "sin ISBN", true); // ISBN por defecto
+    }   
+
+    // Getters
     public String getTitulo() {
         return titulo;
     }
@@ -20,7 +31,11 @@ public class Libro {
     public String getIsbn() {
         return isbn;  
     }
+    public boolean estaDisponible() {
+        return disponible;
+    }
     
+    // Setters
     public void setDisponible(boolean disponible) {
         this.disponible = disponible;
     }
@@ -34,12 +49,7 @@ public class Libro {
         this.isbn = isbn;
     }  
 
-    // Método para verificar si el libro está disponible
-    public boolean estaDisponible() {
-        return disponible;
-    }
-    
-
+    @Override
     public String toString() {
         return "ISBN: "+isbn+"\tTITULO: "+titulo+"\tAUTOR: "+autor+"\tDISPONIBLE: "+disponible;
     }

@@ -1,39 +1,116 @@
+import java.util.ArrayList;
+
 public class Usuario {
     private String nombre;
+    private String dni;
+    private ArrayList<Libro> librosPrestados;
 
-    public Usuario(String nombre) {
+    // Constructor completo
+    public Usuario(String nombre, String dni) {
         this.nombre = nombre;
+        this.dni = dni;
+        this.librosPrestados = new ArrayList<>();
     }
 
+    // Constructor sobrecargado sin dni
+    public Usuario(String nombre) {
+        this(nombre, "sin DNI");
+    }
+
+    // Getters
     public String getNombre() {
         return nombre;
     }
 
+    public String getDni() {
+        return dni;
+        }
+    
+    public ArrayList<Libro> getLibrosPrestados() {
+        return librosPrestados;
+    }
+
+    // Setters
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
-
-    public void prestarLibro(Libro libro) {
-        if (libro.estaDisponible()) {
-            System.out.println("El libro \"" + libro.getTitulo() + "\" ha sido prestado a " + nombre + ".");
-            // Marcar el libro como no disponible
-            libro.setDisponible(false);} 
-        else {
-            System.out.println("El libro \"" + libro.getTitulo() + "\" no está disponible para préstamo.");
-        }
+    public void setDni(String dni) {
+        this.dni = dni;
     }
 
-    public void devolverLibro(Libro libro) {
-        System.out.println("El libro \"" + libro.getTitulo() + "\" ha sido devuelto por " + nombre + ".");
+    // Metodo de instancia para tomar prestado un libro
+    public boolean tomarPrestado(Libro libro) {
+        if (!libro.estaDisponible()) {
+            System.out.println(" El libro '" + libro.getTitulo() + "' no está disponible");
+            return false;
+        }
+        
+        libro.setDisponible(false);
+        librosPrestados.add(libro);
+        System.out.println(nombre + " ha tomado prestado: " + libro.getTitulo());
+        return true;
+    }
+
+    // Método para verificar si el usuario tiene un libro prestado
+    public boolean tieneLibroPrestado(Libro libro) {
+        return librosPrestados.contains(libro);
+    }
+    
+    // Método sobrecargado para verificar por título
+    public boolean tieneLibroPrestado(String titulo) {
+        for (Libro libro : librosPrestados) {
+            if (libro.getTitulo().equalsIgnoreCase(titulo)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // Metodo de instancia para devolver un libro
+    public boolean devolverLibro(Libro libro) {
+        if (!tieneLibroPrestado(libro)) {
+            System.out.println("Error: " + nombre + " no tiene prestado este libro");
+            return false;
+        }
+        
         libro.setDisponible(true);
-        // Marcar el libro como disponible
+        librosPrestados.remove(libro);
+        System.out.println(nombre + " ha devuelto: " + libro.getTitulo());
+        return true;
     }
 
-    public void verificarDisponibilidad(Libro libro) {
-        if (libro.estaDisponible()) {
-            System.out.println("El libro \"" + libro.getTitulo() + "\" está disponible.");
+    // Método sobrecargado para devolver libro por título
+    public boolean devolverLibro(String titulo) {
+        if (!tieneLibroPrestado(titulo)) {
+            System.out.println("No se encontró el libro '" + titulo + "' en los préstamos");
+            return false;
+        }
+        
+        for (Libro libro : librosPrestados) {
+            if (libro.getTitulo().equalsIgnoreCase(titulo)) {
+                return devolverLibro(libro);
+            }
+        }
+        return false;
+    }
+
+    // Método para mostrar libros prestados
+    public void mostrarLibrosPrestados() {
+        if (librosPrestados.isEmpty()) {
+            System.out.println("No tiene libros prestados");
         } else {
-            System.out.println("El libro \"" + libro.getTitulo() + "\" no está disponible.");
+            for (Libro libro : librosPrestados) {
+                System.out.println("- " + libro.getTitulo() + " (ISBN: " + libro.getIsbn() + ")");
+            }
         }
     }
+
+    @Override
+    public String toString() {
+        return "Usuario{" +
+               "nombre='" + nombre +
+               ", librosPrestados=" + librosPrestados.size() +
+               '}';
+    }
+
 }
