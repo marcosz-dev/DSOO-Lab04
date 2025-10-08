@@ -13,6 +13,11 @@ public class SistemaBiblioteca {
     //AGREGAR LIBRO
 
     public void agregarLibro(Libro libro) {
+        // NUEVA VALIDACIÓN: Revisar si el objeto Libro es nulo
+        if (libro == null) {
+            System.out.println("Error: El objeto libro no puede ser nulo");
+            return;
+        }
         //checks
         if (!stringValido(libro.getTitulo()) || !stringValido(libro.getAutor())) {
             System.out.println("Titulo o autor no validos, debes ingresar los datos");
@@ -32,6 +37,11 @@ public class SistemaBiblioteca {
     
     //Busca un libro por su ISBN y lo retorna, si no lo encuentra retorna null
     public Libro buscarLibro(String ISBN) {
+        // Validación adicional para asegurar que la entrada no sea nula o vacía
+        if (!stringValido(ISBN)) {
+            System.out.println("Error: El ISBN de búsqueda no es válido.");
+            return null;
+        }
         for (Libro libro : libros) {
             if (libro.getIsbn().equalsIgnoreCase(ISBN)) {
                 return libro;

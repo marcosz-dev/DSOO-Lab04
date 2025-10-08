@@ -40,11 +40,15 @@ public class Usuario {
 
     // Metodo de instancia para tomar prestado un libro
     public boolean tomarPrestado(Libro libro) {
+        // NUEVA VALIDACIÓN: El libro a tomar prestado no puede ser nulo
+        if (libro == null) {
+            System.out.println("Error: No se puede tomar prestado un objeto nulo.");
+            return false;
+        }
         if (!libro.estaDisponible()) {
             System.out.println(" El libro '" + libro.getTitulo() + "' no está disponible");
             return false;
         }
-        
         libro.setDisponible(false);
         librosPrestados.add(libro);
         System.out.println(nombre + " ha tomado prestado: " + libro.getTitulo());
@@ -68,6 +72,11 @@ public class Usuario {
 
     // Metodo de instancia para devolver un libro
     public boolean devolverLibro(Libro libro) {
+         // NUEVA VALIDACIÓN: El libro a devolver no puede ser nulo
+        if (libro == null) {
+            System.out.println("Error: No se puede devolver un objeto nulo.");
+            return false;
+        }
         if (!tieneLibroPrestado(libro)) {
             System.out.println("Error: " + nombre + " no tiene prestado este libro");
             return false;
