@@ -49,9 +49,10 @@ public class Usuario {
             System.out.println(" El libro '" + libro.getTitulo() + "' no está disponible");
             return false;
         }
+        System.out.println("====== PRESTAMO ======");
         libro.setDisponible(false);
         librosPrestados.add(libro);
-        System.out.println(nombre + " ha tomado prestado: " + libro.getTitulo());
+        System.out.println(nombre + " ha tomado prestado: " + libro.getTitulo()+"\n");
         return true;
     }
 
@@ -84,7 +85,7 @@ public class Usuario {
         
         libro.setDisponible(true);
         librosPrestados.remove(libro);
-        System.out.println(nombre + " ha devuelto: " + libro.getTitulo());
+        System.out.println(nombre + " ha devuelto: " + libro.getTitulo()+"\n");
         return true;
     }
 
@@ -105,13 +106,16 @@ public class Usuario {
 
     // Método para mostrar libros prestados
     public void mostrarLibrosPrestados() {
+        System.out.println("====== LIBROS PRESTADOS "+nombre+" ======");
+    
         if (librosPrestados.isEmpty()) {
-            System.out.println("No tiene libros prestados");
+            System.out.println("<<No tiene libros prestados>>");
         } else {
             for (Libro libro : librosPrestados) {
-                System.out.println("- " + libro.getTitulo() + " (ISBN: " + libro.getIsbn() + ")");
+                System.out.println("- " + libro.getTitulo() + " (ISBN: " + libro.getIsbn() + ")\n");
             }
         }
+        System.out.println();
     }
 
     @Override

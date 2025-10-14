@@ -28,9 +28,9 @@ public class SistemaBiblioteca {
             System.out.println("El libro ya existe, no se hicieron cambios");
             return;
         }
-
+        System.out.println("====== SISTEMA ======");
         libros.add(libro);
-        System.out.println("Se agrego el libro correctamente");
+        System.out.println("Se agrego el libro correctamente\n");
     }
 
     //METODOS PARA VERIFICAR LIBRO
@@ -61,13 +61,14 @@ public class SistemaBiblioteca {
             return;
         }
         
-        if (existeUsuario(usuario.getNombre())) {
-            System.out.println("Error: El usuario '" + usuario.getNombre() + "' ya existe en el sistema");
+        if (existeUsuario(usuario.getDni())) {
+            System.out.println("Error: El usuario con DNI '" + usuario.getDni() + "' ya existe en el sistema");
             return;
         }
         
+        System.out.println("====== SISTEMA ======");
         usuarios.add(usuario);
-        System.out.println("Usuario '" + usuario.getNombre() + "' agregado correctamente");
+        System.out.println("Usuario '" + usuario.getNombre() + "' agregado correctamente\n");
     }
 
     //Metodos de validacion de usuario
@@ -101,13 +102,13 @@ public class SistemaBiblioteca {
         return cadena.trim().isEmpty();
     }
 
-    private boolean existeUsuario(String nombre){
-        return buscarUsuario(nombre) != null;
+    private boolean existeUsuario(String dni){
+        return buscarUsuario(dni) != null;
     }
 
-    public Usuario buscarUsuario(String nombre){
+    public Usuario buscarUsuario(String dni){
         for(Usuario a : usuarios){
-            if(a.getNombre().equalsIgnoreCase(nombre)){
+            if(a.getDni().equalsIgnoreCase(dni)){
                 return a;
             }
         }
@@ -122,7 +123,7 @@ public class SistemaBiblioteca {
 
     // Método para mostrar todos los libros
     public void mostrarLibros() {
-        System.out.println("\n========== CATÁLOGO DE LIBROS ==========");
+        System.out.println("========== CATÁLOGO DE LIBROS ==========");
         if (libros.isEmpty()) {
             System.out.println("No hay libros registrados");
         } else {
@@ -135,7 +136,7 @@ public class SistemaBiblioteca {
     
     // Método para mostrar todos los usuarios
     public void mostrarUsuarios() {
-        System.out.println("\n========== LISTA DE USUARIOS ==========");
+        System.out.println("========== LISTA DE USUARIOS ==========");
         if (usuarios.isEmpty()) {
             System.out.println("No hay usuarios registrados");
         } else {
