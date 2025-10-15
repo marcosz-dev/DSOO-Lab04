@@ -1,149 +1,165 @@
 import java.util.ArrayList;
 
+
 public class SistemaBiblioteca {
     private ArrayList<Libro> libros;
     private ArrayList<Usuario> usuarios;
+    private ArrayList<Prestamo> prestamos;
 
-    // Constructor
     public SistemaBiblioteca() {
-        this.libros = new ArrayList<>();
-        this.usuarios = new ArrayList<>();
+        libros = new ArrayList<>();
+        usuarios = new ArrayList<>();
+        prestamos = new ArrayList<>();
     }
 
-    //AGREGAR LIBRO
 
+    // Metodo agregar libro al sistema
     public void agregarLibro(Libro libro) {
-        // NUEVA VALIDACIÓN: Revisar si el objeto Libro es nulo
-        if (libro == null) {
-            System.out.println("Error: El objeto libro no puede ser nulo");
+        if (libro == null) {        // Valida que el argumeno no sea nulo
+            System.out.println("Error: El libro no puede ser nulo\n"); 
             return;
         }
-        //checks
-        if (!stringValido(libro.getTitulo()) || !stringValido(libro.getAutor())) {
-            System.out.println("Titulo o autor no validos, debes ingresar los datos");
-            return;
-        } 
-
-        if (buscarLibro(libro.getIsbn())!=null) {
-            System.out.println("El libro ya existe, no se hicieron cambios");
+        if (!stringValido(libro.getAutor()) || !stringValido(libro.getTitulo()) || !stringValido(libro.getISBN())) {        // Valida que los atributos no sean nulos
+            System.out.println("Error: Autor, Titulo o Codigo no puede ser nulo/vacio\n");
             return;
         }
-        System.out.println("====== SISTEMA ======");
+        if (buscaLibro(libro.getISBN())!=null) {      // Verifica si ya existe el codigo
+            System.out.println("Error: Codigo ya registrado, no se hicieron cambios\n");
+            return;
+        }
+        
         libros.add(libro);
-        System.out.println("Se agrego el libro correctamente\n");
+        System.out.println("====== SISTEMA ======");
+        System.out.println("Libro registrado: " + libro.getTitulo());
     }
 
-    //METODOS PARA VERIFICAR LIBRO
-    
-    //Busca un libro por su ISBN y lo retorna, si no lo encuentra retorna null
-    public Libro buscarLibro(String ISBN) {
-        // Validación adicional para asegurar que la entrada no sea nula o vacía
-        if (!stringValido(ISBN)) {
-            System.out.println("Error: El ISBN de búsqueda no es válido.");
-            return null;
-        }
-        for (Libro libro : libros) {
-            if (libro.getIsbn().equalsIgnoreCase(ISBN)) {
+    // Validaciones para registrar Libro
+    private Libro buscaLibro(String codigo) {
+        for (Libro libro : libros) {        
+            if (libro.getISBN().equalsIgnoreCase(codigo)) {
                 return libro;
             }
         }
         return null;
     }
 
-    //Valida que la cadena no sea null
-    private boolean stringValido(String palabra) {
-        return palabra != null && !palabra.trim().isEmpty();
-    }
-
-    //Metodo para agregar usuario
+    // Metodo para agregar usuarios al sistema
     public void agregarUsuario(Usuario usuario) {
-        if (!validarUsuario(usuario)) {
+        if (usuario == null) {      // Verifica que el argumento no sea null
+            System.out.println("Error: Usuario no puede ser nulo\n");
             return;
         }
-        
-        if (existeUsuario(usuario.getDni())) {
-            System.out.println("Error: El usuario con DNI '" + usuario.getDni() + "' ya existe en el sistema");
+        if (!stringValido(usuario.getNombre()) || !stringValido(usuario.getCodigo())) {        // Verifica que el nombre de usuario no este vacio o no sea null
+            System.out.println("Error: Nombre o Codigo no puede estar vacio\n");
             return;
         }
-        
-        System.out.println("====== SISTEMA ======");
+        if (buscaUsuario(usuario.getCodigo()) != null) {        // Verifica si existe un objeto con el mismo codigo
+            System.out.println("Error: Codigo ya registrado, no se hicieron cambios\n");
+            return;
+        }
         usuarios.add(usuario);
-        System.out.println("Usuario '" + usuario.getNombre() + "' agregado correctamente\n");
+        System.out.println("====== SISTEMA ======");
+        System.out.println("Usuario registrado: " + usuario.getNombre());
     }
 
-    //Metodos de validacion de usuario
-    private boolean validarUsuario(Usuario usuario){
-        if (!validarObjetoNulo(usuario)) return false;
-        if(!validarNombreUsuario(usuario.getNombre())) return false;
-        return true;
-    }
-
-    private boolean validarObjetoNulo (Usuario usuario){
-        if(usuario == null){
-            System.out.println("Error: El usuario no puede ser nulo");
-            return false;
-        }
-        return true;
-    }
-
-    private boolean validarNombreUsuario(String nombre){
-        if(!stringValido(nombre)){
-            System.out.println("Error: El nombre del usuario no puede ser nulo");
-            return false;
-        }
-        if(esCadenaVacia(nombre)){
-            System.out.println("Error: El nombre del usuario no puede estar vacio");
-            return false;
-        }
-        return true;
-    }   
-    
-    private boolean esCadenaVacia(String cadena){
-        return cadena.trim().isEmpty();
-    }
-
-    private boolean existeUsuario(String dni){
-        return buscarUsuario(dni) != null;
-    }
-
-    public Usuario buscarUsuario(String dni){
-        for(Usuario a : usuarios){
-            if(a.getDni().equalsIgnoreCase(dni)){
-                return a;
+    private Usuario buscaUsuario(String codigo) {
+        for (Usuario usuario : usuarios) {
+            if (usuario.getCodigo().equalsIgnoreCase(codigo)) {
+                return usuario;
             }
         }
-        return null; 
-    }  
+        return null;
+    }
 
-    //Lista de usuarios registrados
-    public ArrayList<Usuario> getUsuarios() {
-        return usuarios;
+    private boolean stringValido(String cadena) {
+        return cadena != null && !cadena.trim().isEmpty();
     }
 
 
-    // Método para mostrar todos los libros
-    public void mostrarLibros() {
-        System.out.println("========== CATÁLOGO DE LIBROS ==========");
-        if (libros.isEmpty()) {
-            System.out.println("No hay libros registrados");
-        } else {
-            for (int i = 0; i < libros.size(); i++) {
-                System.out.println((i + 1) + ". " + libros.get(i));
-            }
+    // Metodo para registrar un prestamo
+    public void registrarPrestamo(String codigoPrestamo, String codigoUsuario, String ISBN) {
+        if (!stringValido(codigoUsuario) || !stringValido(ISBN) || !stringValido(codigoPrestamo)) {
+            System.out.println("Error: Codigo de usuario, libro o codigoPrestamo no deben ser nulos, no se hicieron cambios\n");
+            return;
         }
-        System.out.println("=========================================\n");
+
+        Usuario usuariop = buscaUsuario(codigoUsuario);
+        Libro libro = buscaLibro(ISBN);
+
+        if (usuariop == null) {
+            System.out.println("Error: Usuario no registrado en el sistema, no se hicieron cambios");
+            return;
+        }
+        if (libro == null) {
+            System.out.println("Error: Libro no registrado en el sistema, no se hicieron cambios");
+            return;
+        }
+        if (buscarPrestamo(codigoPrestamo)!=null) {
+            System.out.println("Error: El codigo de prestamo ya existe, no se hicieron cambios\n");
+            return;
+        }
+        if (!libro.estaDisponible()) {
+            System.out.println("El libro '" + libro.getTitulo() + "' no está disponible.\nNo se realizo el prestamo\n");
+            return;
+        }
+
+        libro.setDisponible(false);
+        usuariop.agregarLibroPrestado(libro);
+        Prestamo prestamo = new Prestamo(codigoPrestamo, usuariop, libro);
+        prestamos.add(prestamo);
+
+        System.out.println("====== PRESTAMO REGISTRADO ======");
+        System.out.println(prestamo);
+        System.out.println();
     }
-    
-    // Método para mostrar todos los usuarios
-    public void mostrarUsuarios() {
-        System.out.println("========== LISTA DE USUARIOS ==========");
-        if (usuarios.isEmpty()) {
-            System.out.println("No hay usuarios registrados");
-        } else {
-            for (int i = 0; i < usuarios.size(); i++) {
-                System.out.println((i + 1) + ". " + usuarios.get(i));
+
+    // Verifica si existe el codigo dado por el argumento
+    private Prestamo buscarPrestamo(String codigo) {
+        for (Prestamo prestamo : prestamos) {
+            if (prestamo.getCodigo().equalsIgnoreCase(codigo)) {
+                return prestamo;
             }
         }
-        System.out.println("========================================\n");
+        return null;
+    }
+
+    // Metodo para realizar la devolucion de un libro
+    public void registrarDevolucion(String codigoPrestamo) {
+        if (!stringValido(codigoPrestamo)) {
+            System.out.println("Error: Codigo no puede ser nulo/vacio");
+            return;
+        }
+        Prestamo prestamo = buscarPrestamo(codigoPrestamo);
+        if (prestamo==null) {
+            System.out.println("No se encontró el préstamo activo con código: " + codigoPrestamo);
+            return;
+        }
+        prestamo.registrarDevolucion();
+        prestamos.remove(prestamo);
+        System.out.println("====== DEVOLUCION ======");
+        System.out.println(prestamo);
+        System.out.println();
+        
+    }
+
+    public void listarLibros() {
+        System.out.println("===== LIBROS REGISTRADOS =====");
+        for (Libro libro : libros) {
+            System.out.println(libro);
+        }
+    }
+
+    public void listarUsuarios() {
+        System.out.println("===== USUARIOS REGISTRADOS =====");
+        for (Usuario usuario : usuarios) {
+            System.out.println(usuario);
+        }
+    }
+
+    public void listarPrestamos() {
+        System.out.println("===== HISTORIAL DE PRÉSTAMOS =====");
+        for (Prestamo p : prestamos) {
+            System.out.println(p);
+        }
     }
 }
